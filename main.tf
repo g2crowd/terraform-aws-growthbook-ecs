@@ -16,7 +16,6 @@ locals {
   ]
 }
 
-# mongodb+srv://${var.db_username}:${var.db_password}@${var.db_host}/
 
 ### Cloudwatch logs
 resource "aws_cloudwatch_log_group" "this" {
