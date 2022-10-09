@@ -270,6 +270,26 @@ variable "s3_region" {
 }
 
 
+# Notifications
+variable "enable_notifications" {
+  type        = bool
+  description = "Specifies whether to enable slack notification on changes made to feature definitions"
+  default     = false
+}
+
+variable "slack_token" {
+  type        = string
+  description = "Access tokens are the keys of the Slack platform"
+  default     = ""
+}
+
+variable "slack_channel" {
+  type        = string
+  description = "Name of the slack channel where notifications will be sent"
+  default     = ""
+}
+
+
 # Cloudwatch
 variable "cloudwatch_log_retention_in_days" {
   description = "Retention period of growthbook CloudWatch logs"
