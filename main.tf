@@ -8,14 +8,22 @@ locals {
     {
       name  = "S3_REGION"
       value = var.s3_region
-    },
+    }
+  ]
+
+  env_secrets = [
     {
       name  = "MONGODB_URI"
-      value = "mongodb://${var.db_username}:${var.db_password}@${aws_docdb_cluster.this.endpoint}:${var.db_port}/?retryWrites=false&directConnection=true&tls=true&tlsCAFile=/usr/local/src/app/rds-combined-ca-bundle.pem"
+      valueFrom = aws_ssm_parameter.mongodb.arn
     }
   ]
 }
 
+resource "aws_ssm_parameter" "mongodb" {
+  name  = "${var.ssm_parameter_prefix}mongodb_uri"
+  type  = "String"
+  value = "mongodb://${var.db_username}:${var.db_password}@${aws_docdb_cluster.this.endpoint}:${var.db_port}/?retryWrites=false&directConnection=true&tls=true&tlsCAFile=/usr/local/src/app/rds-combined-ca-bundle.pem"
+}
 
 ### Cloudwatch logs
 resource "aws_cloudwatch_log_group" "this" {
@@ -92,6 +100,15 @@ resource "aws_iam_policy" "this" {
       ],
       "Effect": "Allow",
       "Resource": "arn:aws:logs:*:*:*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetParameters"
+      ],
+      "Resource": [
+        "${aws_ssm_parameter.mongodb.arn}"
+      ]
     }
   ]
 }
@@ -172,7 +189,11 @@ module "container_definition" {
   container_memory             = var.ecs_task_memory
   container_memory_reservation = var.container_memory_reservation
   container_cpu                = var.ecs_task_cpu
-  secrets                      = var.environment_secrets
+
+  secrets = concat(
+    local.env_secrets,
+    var.environment_secrets,
+  )
 
   environment = concat(
     local.env_variables,

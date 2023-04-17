@@ -14,6 +14,12 @@ variable "environment" {
   description = "Name of the environment"
 }
 
+variable "ssm_parameter_prefix" {
+  description = "SSM parameter store prefix"
+  type        = string
+  default     = "/growthbook/"
+}
+
 variable "image_name" {
   description = "Docker image to run growthbook with"
   type        = string
