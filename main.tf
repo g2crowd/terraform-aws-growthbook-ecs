@@ -107,7 +107,7 @@ resource "aws_iam_policy" "this" {
         "ssm:GetParameters"
       ],
       "Resource": [
-        "${aws_ssm_parameter.mongodb.arn}"
+        "arn:aws:ssm:*:*:parameter${var.ssm_parameter_prefix}"
       ]
     }
   ]
