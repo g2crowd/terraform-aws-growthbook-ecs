@@ -70,6 +70,9 @@ resource "aws_iam_role" "this" {
 EOF
 }
 
+data "aws_kms_alias" "ssm" {
+  name = "alias/aws/ssm"
+}
 
 resource "aws_iam_policy" "this" {
   name = "${var.environment}_${var.name}_policy"
@@ -102,12 +105,22 @@ resource "aws_iam_policy" "this" {
       "Resource": "arn:aws:logs:*:*:*"
     },
     {
+       "Sid": "KMSKeyAccess",
+       "Effect": "Allow",
+       "Action": [
+         "kms:Decrypt"
+       ],
+       "Resource": [
+          "${data.aws_kms_alias.ssm.arn}"
+       ]
+    },
+    {
       "Effect": "Allow",
       "Action": [
         "ssm:GetParameters"
       ],
       "Resource": [
-        "arn:aws:ssm:*:*:parameter${var.ssm_parameter_prefix}"
+        "arn:aws:ssm:*:*:parameter${var.ssm_parameter_prefix}*"
       ]
     }
   ]
