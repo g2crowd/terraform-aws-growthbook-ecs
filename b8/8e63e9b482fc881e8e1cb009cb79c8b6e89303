@@ -1,0 +1,19 @@
+.github/workflows/ci.yml
+  s_a146fcebe4a742::t_c53ea0618ea5ad 23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "b88e63e9b482fc881e8e1cb009cb79c8b6e89303",
+  "prompts": {},
+  "sessions": {
+    "s_a146fcebe4a742": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a724191e-ee5f-46e7-b575-0d78705da424",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "g2-enterprise-platform-bot[bot] <g2-enterprise-platform-bot[bot]@users.noreply.github.com>"
+    }
+  }
+}
